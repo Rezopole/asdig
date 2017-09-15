@@ -2,12 +2,18 @@
 asdig: asdig.cpp
 	g++ -Wall -o asdig asdig.cpp -lresolv
 
+.PHONY clean:
+
 clean:
 	rm -f asdig
 
-.PHONY test: vimtest
+.PHONY test:
 
-.PHONY vimtest: asdig
+test: vimtest
+
+.PHONY vimtest:
+
+vimtest: asdig
 	./asdig					134.214.100.6  10.10.12.64  2a02:3d0:623:a000::8008
 	./asdig -cumry				134.214.100.6  10.10.12.64  2a02:3d0:623:a000::8008
 	./asdig -cymru				134.214.100.6  10.10.12.64  2a02:3d0:623:a000::8008

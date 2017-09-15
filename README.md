@@ -2,15 +2,12 @@
 simple unix util for retrieving AS (autonomous system) match from IP(v6) published
 by services like Rezopole GoASMap (http://github.com/rezopole/goasmap) or cymru.
 
-## Installation
-`> make && chmod 755 ./asdig && cp ./asdig /usr/local/bin`
-
 ## Usage
 how to retrieve the AS that publish a prefix for 134.214.100.6 ?
 
 ```bash
-$ asdig 134.214.100.6`
-`2060 | 134.214.0.0/16 |`
+$ asdig 134.214.100.6
+2060 | 134.214.0.0/16 |
  ```
 
 AS no 2060 does via the 134.214.0.0/16 subnet route.
@@ -29,6 +26,9 @@ $ asdig 2a02:3d0:623:a000::8008
  ```
 
 AS 22822 does via the 2a02:3d0::/32 subnet announce.
+
+## Installation
+`> make && chmod 755 ./asdig && cp ./asdig /usr/local/bin`
 
 
 ## Prerequisites
