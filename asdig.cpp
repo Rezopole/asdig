@@ -43,7 +43,12 @@ int resp_query (const char * query) {
     unsigned char answer [NS_PACKETSZ+10];
 
 
+    if ((_res.options & RES_INIT) == 0) res_init();
+    // _res.options |= RES_USEVC;   someday would use tcp rather than udp ?
+
+
     int r = res_query (query, ns_c_in, ns_t_txt, (unsigned char *)answer, NS_PACKETSZ);
+    // int r = res_query (query, ns_c_in, ns_t_txt, (unsigned char *)answer, 30000);
 
     if (r < 0) {
 	switch (h_errno) {
@@ -108,10 +113,13 @@ int main (int nb, char ** cmde) {
     int i;
     bool therewassomeerror = false;
     const char 
+	*rzpas = "asn.rezopole.net",
 	*rzpv4 = "origin.asn.rezopole.net.",
 	*rzpv6 = "origin6.asn.rezopole.net.",
+	*cymruas = NULL,
 	*cymruv4 = "origin.asn.cymru.com.",
 	*cymruv6 = "origin6.asn.cymru.com.",
+	*suffixas = rzpas,
 	*suffixv4 = rzpv4,
 	*suffixv6 = rzpv6;
 
@@ -124,10 +132,12 @@ int main (int nb, char ** cmde) {
 		suffixv6 = cmde[i] + 10;
 		continue;
 	    } else if (strcmp (cmde[i], "-rezopole") == 0) {
+		suffixas = rzpas;
 		suffixv4 = rzpv4;
 		suffixv6 = rzpv6;
 		continue;
 	    } else if (strcmp (cmde[i], "-cymru") == 0) {
+		suffixas = cymruas;
 		suffixv4 = cymruv4;
 		suffixv6 = cymruv6;
 		continue;
@@ -136,7 +146,7 @@ int main (int nb, char ** cmde) {
 			||  (strcmp (cmde[i], "-h") == 0)
 		) {
 		cout << "asdig [-rezopole] [-cymru] [-suffixv4=my.ipv4.suffix.com]" << endl
-		     << "      [-suffixv6=my.ipv6.suffix.net] IP [ ... IP ... ]" << endl;
+		     << "      [-suffixv6=my.ipv6.suffix.net] IP|AS#### [ ... IP|AS### ... ]" << endl;
 		return 0;
 	    } else if (strcmp (cmde[i], "-version") == 0) {
 		cout << "asdig version 0.9" << endl;
@@ -149,22 +159,31 @@ int main (int nb, char ** cmde) {
 
 	stringstream q;
 	Level3Addr adr;
-	if (strchr(cmde[i], ':') != NULL) { // we have an IPv6
-	    adr = Level3Addr (TETHER_IPV6, string(cmde[i]));
-	} else if (strchr(cmde[i], '.') != NULL) { // we now assume IPv4
-	    adr = Level3Addr (TETHER_IPV4, string(cmde[i]));
-	}
+	if ((strncmp ("as", cmde[i], 2) == 0) || (strncmp ("AS", cmde[i], 2) == 0)) {
+	    q << "as" << (cmde[i]+2);
+	    if (suffixas == NULL) {
+		cerr << "falling back on rezopole for as-lookup" << endl;
+		suffixas = rzpas;
+	    }
+	    q << '.' << suffixas;
+	} else {
+	    if (strchr(cmde[i], ':') != NULL) { // we have an IPv6
+		adr = Level3Addr (TETHER_IPV6, string(cmde[i]));
+	    } else if (strchr(cmde[i], '.') != NULL) { // we now assume IPv4
+		adr = Level3Addr (TETHER_IPV4, string(cmde[i]));
+	    }
 
-	adr.rev_arpa_radix (q);
-	switch (adr.t) {
-	    case TETHER_IPV4:
-		q << '.' << suffixv4;
-		break;
-	    case TETHER_IPV6:
-		q << '.' << suffixv6;
-		break;
-	    default:
-		break;
+	    adr.rev_arpa_radix (q);
+	    switch (adr.t) {
+		case TETHER_IPV4:
+		    q << '.' << suffixv4;
+		    break;
+		case TETHER_IPV6:
+		    q << '.' << suffixv6;
+		    break;
+		default:
+		    break;
+	    }
 	}
 
 	if (resp_query (q.str().c_str()))
@@ -172,7 +191,7 @@ int main (int nb, char ** cmde) {
     }
 
     if (therewassomeerror)
-	return false;
+	return 1;
 
     return 0;
 }
