@@ -10,7 +10,7 @@ $ asdig 134.214.100.6
 2060 | 134.214.0.0/16 |
  ```
 
-AS no 2060 does via the 134.214.0.0/16 subnet route.
+AS-2060 does via the 134.214.0.0/16 subnet route.
 
 who publish some IPv6 route for www.nasa.gov ?
 
@@ -25,7 +25,16 @@ $ asdig 2a02:3d0:623:a000::8008
 22822 | 2a02:3d0::/32 |
  ```
 
-AS 22822 does via the 2a02:3d0::/32 subnet announce.
+AS-22822 does via the 2a02:3d0::/32 subnet announce.
+
+who is AS-199422 ?
+
+```bash
+$ asdig as199422
+199422 | FR | ripe | 2013-01-24 | REZOPOLE
+ ```
+
+AS-199422 is registered from RIPE fo some french organisation (since 2013-01-24) that named it "REZOPOLE".
 
 ## Installation
 `> make && chmod 755 ./asdig && cp ./asdig /usr/local/bin`
