@@ -34,7 +34,7 @@ $ asdig as199422
 199422 | FR | ripe | 2013-01-24 | REZOPOLE
  ```
 
-AS-199422 is registered from RIPE fo some french organisation (since 2013-01-24) that named it "REZOPOLE".
+AS-199422 is registered from RIPE to some french organisation (since 2013-01-24) that named it "REZOPOLE".
 
 ## Installation
 `> make && chmod 755 ./asdig && cp ./asdig /usr/local/bin`
