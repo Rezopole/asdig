@@ -38,13 +38,21 @@
 
 using namespace std;
 
-int resp_query (const char * query) {
+int resp_query (const char * query, const char * nameserver=NULL) {
 
     unsigned char answer [NS_PACKETSZ+10];
 
 
     if ((_res.options & RES_INIT) == 0) res_init();
     // _res.options |= RES_USEVC;   someday would use tcp rather than udp ?
+
+    
+    if(nameserver != NULL) {
+	_res.nscount = 1;
+	_res.nsaddr_list[0].sin_family = AF_INET;
+	_res.nsaddr_list[0].sin_port = htons (53);
+	inet_aton (nameserver, &(_res.nsaddr_list[0].sin_addr));
+    }
 
 
     int r = res_query (query, ns_c_in, ns_t_txt, (unsigned char *)answer, NS_PACKETSZ);
@@ -121,7 +129,20 @@ int main (int nb, char ** cmde) {
 	*cymruv6 = "origin6.asn.cymru.com.",
 	*suffixas = rzpas,
 	*suffixv4 = rzpv4,
-	*suffixv6 = rzpv6;
+	*suffixv6 = rzpv6,
+	*nameserver = NULL;
+
+    // first we look for nameserver
+    bool dnsserver_multiple_change = false;
+    for (i=1 ; i<nb ; i++) {
+	if (cmde[i][0] == '@') {
+	    if (nameserver != NULL) dnsserver_multiple_change = true;
+	    nameserver = cmde[i] + 1;
+	    continue;
+	}
+    }
+    if (dnsserver_multiple_change)
+	cerr << "WARNING: multiple dns servers given, will only use " << nameserver << " for dns-lookups" << endl;
 
     for (i=1 ; i<nb ; i++) {
 	if (cmde[i][0] == '-')  {
@@ -145,7 +166,7 @@ int main (int nb, char ** cmde) {
 			||  (strcmp (cmde[i], "--help") == 0)
 			||  (strcmp (cmde[i], "-h") == 0)
 		) {
-		cout << "asdig [-rezopole] [-cymru] [-suffixv4=my.ipv4.suffix.com]" << endl
+		cout << "asdig [-rezopole] [-cymru] [-suffixv4=my.ipv4.suffix.com] [@RecurseDNServerIPv4]" << endl
 		     << "      [-suffixv6=my.ipv6.suffix.net] IP|AS#### [ ... IP|AS### ... ]" << endl;
 		return 0;
 	    } else if (strcmp (cmde[i], "-version") == 0) {
@@ -155,6 +176,8 @@ int main (int nb, char ** cmde) {
 		cerr << "unkown option \"" << cmde[i] << "\"" << endl;
 		continue;
 	    }
+	} else if (cmde[i][0] == '@') {
+	    continue;
 	}
 
 	stringstream q;
@@ -186,7 +209,7 @@ int main (int nb, char ** cmde) {
 	    }
 	}
 
-	if (resp_query (q.str().c_str()))
+	if (  resp_query (q.str().c_str(), nameserver)  )
 	    therewassomeerror = true;
     }
 
