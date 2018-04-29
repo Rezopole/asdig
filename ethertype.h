@@ -29,7 +29,11 @@
 #include <iostream>
 #include <string>
 
+#if defined(__OpenBSD__)
+#include <net/ethertypes.h>
+#else
 #include <net/ethernet.h>
+#endif
 
 // --------- Ethertype -------------------------------------------------------------------------------------------------------------------------
 

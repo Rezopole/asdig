@@ -1,6 +1,11 @@
+ifdef OPENBSD
+CXXFLAGS=-R /usr/local/lib/libbind -I/usr/local/include/bind -L/usr/local/lib/libbind -lbind
+else
+CXXFLAGS=-lresolv
+endif
 
 asdig: asdig.cpp
-	g++ -Wall -o asdig asdig.cpp -lresolv
+	g++ -Wall ${CXXFLAGS} -o asdig asdig.cpp
 
 .PHONY clean:
 

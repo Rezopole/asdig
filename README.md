@@ -39,6 +39,13 @@ AS-199422 is registered from RIPE to some french organisation (since 2013-01-24)
 ## Installation
 `> make && chmod 755 ./asdig && cp ./asdig /usr/local/bin`
 
+### Installation on OpenBSD
+Install `libbind` and `gmake` and compile with :
+
+```bash
+$ doas pkg_add libbind gmake
+$ gmake OPENBSD=1 && chmod 755 ./asdig && doas cp ./asdig /usr/local/bin
+```
 
 ## Prerequisites
 a C++ compiler and the resolv library with it's headers.
