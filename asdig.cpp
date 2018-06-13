@@ -120,6 +120,7 @@ int main (int nb, char ** cmde) {
 
     int i;
     bool therewassomeerror = false;
+    bool debug_query = false;
     const char 
 	*rzpas = "asn.rezopole.net",
 	*rzpv4 = "origin.asn.rezopole.net.",
@@ -166,12 +167,17 @@ int main (int nb, char ** cmde) {
 			||  (strcmp (cmde[i], "--help") == 0)
 			||  (strcmp (cmde[i], "-h") == 0)
 		) {
-		cout << "asdig [-rezopole] [-cymru] [-suffixv4=my.ipv4.suffix.com] [@RecurseDNServerIPv4]" << endl
-		     << "      [-suffixv6=my.ipv6.suffix.net] IP|AS#### [ ... IP|AS### ... ]" << endl;
+		cout << "asdig [-rezopole] [-cymru] [-suffixv4=my.ipv4.suffix.com] [@IP.my.ser.ver]" << endl
+		     << "      [-suffixv6=my.ipv6.suffix.net] IP|AS#### [ ... IP|AS### ... ] [-d|--debug]" << endl;
 		return 0;
 	    } else if (strcmp (cmde[i], "-version") == 0) {
 		cout << "asdig version 0.9" << endl;
 		return 0;
+	    } else if (	(strcmp (cmde[i], "-d") == 0)
+			|| (strcmp (cmde[i], "--debug") == 0)
+		) {
+		debug_query = true;
+		continue;
 	    } else {
 		cerr << "unkown option \"" << cmde[i] << "\"" << endl;
 		continue;
@@ -207,6 +213,13 @@ int main (int nb, char ** cmde) {
 		default:
 		    break;
 	    }
+	}
+
+	if (debug_query) {
+	    cerr << "dig TXT " << q.str().c_str();
+	    if (nameserver != NULL)
+		cerr << " @" << nameserver;
+	    cerr << endl;
 	}
 
 	if (  resp_query (q.str().c_str(), nameserver)  )
