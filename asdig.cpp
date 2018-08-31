@@ -192,8 +192,11 @@ int main (int nb, char ** cmde) {
 		cout << "asdig [-rezopole] [-cymru] [-suffixv4=my.ipv4.suffix.com] [@IP.my.ser.ver]" << endl
 		     << "      [-suffixv6=my.ipv6.suffix.net] IP|AS#### [ ... IP|AS### ... ] [-d|--debug]" << endl;
 		return 0;
-	    } else if (strcmp (cmde[i], "-version") == 0) {
-		cout << "asdig version 0.9" << endl;
+	    } else if (	    (strcmp (cmde[i], "-version") == 0)
+			||  (strcmp (cmde[i], "--version") == 0)
+			||  (strcmp (cmde[i], "-v") == 0)
+		){
+		cout << "asdig version 0.95" << endl;
 		return 0;
 	    } else if (	(strcmp (cmde[i], "-d") == 0)
 			|| (strcmp (cmde[i], "--debug") == 0)
