@@ -32,13 +32,16 @@
 
 #include <iostream>
 #include <sstream>
+#include <map>
 #include <iomanip>
 
 #include "level3addr.h"
 
 using namespace std;
 
-int resp_query (const char * query, const char * nameserver=NULL) {
+// the multipmap is used for sorting by prefix size
+
+int resp_query (const char * query, multimap<int,string> &lout, const char * nameserver=NULL) {
 
     unsigned char answer [NS_PACKETSZ+10];
 
@@ -61,21 +64,21 @@ int resp_query (const char * query, const char * nameserver=NULL) {
     if (r < 0) {
 	switch (h_errno) {
 	    case HOST_NOT_FOUND:   /* Authoritative Answer Host not found */
-		cout << "HOST_NOT_FOUND" << endl;
+		lout.insert (pair<int,string>(0, "HOST_NOT_FOUND"));
 		return 0;
 	    case TRY_AGAIN:        /* Non-Authoritative Host not found, or SERVERFAIL */
-		cout << "DNS_ERROR" << endl;
+		lout.insert (pair<int,string>(0, "DNS_ERROR"));
 		cerr << "res_query: " << query << " TRY_AGAIN" << endl;
 		return 1;
 	    case NO_RECOVERY:      /* Non recoverable errors, FORMERR, REFUSED, NOTIMP */
-		cout << "DNS_ERROR" << endl;
+		lout.insert (pair<int,string>(0, "DNS_ERROR"));
 		cerr << "res_query: " << query << "NO_RECOVERY:" << endl;
 		return 1;
 	    case NO_DATA:          /* Valid name, no data record of requested type */
-		cout << "NO_DATA" << endl;
+		lout.insert (pair<int,string>(0, "NO_DATA"));
 		return 0;
 	    default:
-		cout << "DNS_ERROR" << endl;
+		lout.insert (pair<int,string>(0, "DNS_ERROR"));
 		cerr << "res_query: " << query << " error no:" << h_errno << endl;
 		return 1;
 
@@ -103,11 +106,30 @@ int resp_query (const char * query, const char * nameserver=NULL) {
 	    int l = (int)(*ns_rr_rdata(rr)); // the length of the TXT field (? JD)
 	    const unsigned char *pmax = ns_msg_base(handle) + ns_msg_size(handle);
 	    const unsigned char *p = ns_rr_rdata(rr) + 1;
+	    string s;
 	    for (int i=0 ; (i<l) && (*p!=0) && (p<pmax) ; i++, p++) {
-		cout << (char)(*p);
+		s += (char)(*p);
+	    }
+// typical answer is :
+// 199422 | 77.95.64.0/23 | FR | ripe | 2013-01-24 | REZOPOLE
+	    int prefsize = 0;
+	    {	size_t p,q;
+		p = s.find('|');
+		if (p != string::npos) {
+		    p = s.find('/', p+1);
+		    if (p != string::npos) {
+			p++;
+			q = s.find('|', p);
+			if (q != string::npos) {
+			    prefsize = 129 - atoi(s.substr(p,q-p).c_str());
+			} else {
+			    prefsize = 129 - atoi(s.substr(p).c_str());
+			}
+		    }
+		}
 	    }
 
-	    cout << endl;
+	    lout.insert (pair<int,string>(prefsize, s));
 	}
     }
 
@@ -222,8 +244,13 @@ int main (int nb, char ** cmde) {
 	    cerr << endl;
 	}
 
-	if (  resp_query (q.str().c_str(), nameserver)  )
+	multimap<int,string> l;
+	if (  resp_query (q.str().c_str(), l, nameserver)  )
 	    therewassomeerror = true;
+	multimap<int, string>::iterator li;
+	for (li=l.begin() ; li!=l.end() ; li++) {
+	    cout << li->second << endl;
+	}
     }
 
     if (therewassomeerror)
