@@ -1,0 +1,3 @@
+
+build
+    include correct version from build infrastructure number instead of static in code

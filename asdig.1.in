@@ -1,0 +1,121 @@
+.\" {
+.\"
+.\"  asdig, retreives Autonomous System (AS) infos from repositories via DNS rev-queries 
+.\"  Copyright (C) 2016 Jean-Daniel Pauget <jdpauget@rezopole.net>
+.\"  
+.\"  This program is free software; you can redistribute it and/or
+.\"  modify it under the terms of the GNU General Public License
+.\"  as published by the Free Software Foundation; either version 2
+.\"  of the License, or (at your option) any later version.
+.\"  
+.\"  This program is distributed in the hope that it will be useful,
+.\"  but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"  GNU General Public License for more details.
+.\"  
+.\"  You should have received a copy of the GNU General Public License
+.\"  along with this program; if not, write to the Free Software
+.\"  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+.\"
+.\" }
+.TH "asdig-" "1" "2020" "jd" "asdig utility"
+.SH NAME
+asdig \- retrieve efficiently routing informations via dns queries.
+.br
+.SH SYNOPSIS
+.B asdig
+.RI "[" -rezopole "] [" -cymru "] " IPv4 " | " IPv6 " | " ASxxxx " [ ... " IP " | " AS " ... ]"
+
+.B asdig
+.RI "[" -rezopole "] [" -cymru "] [-suffixv4=" my.ipv4.suffix.com "] [@" IP.ref.ser.ver "] [-suffixv6=" my.ipv6.suffix.net "] " IP " | " ASxxxxx " [ ... " IP " | " AS### " ... ]  [" -d " | " --debug ]
+.SH DESCRIPTION
+for each IP or AS listed as argument,
+.B asdig
+performs a dns query to a reference dns server that provides matchings from IP-addresses to Autonomous Systems.
+
+For a given
+.I IPv4
+or
+.I IPv6
+it would display current BGP anouncements received at the BGP-infrastructure of the queried
+.BR "IP-to-AS reference server" ,
+or Internet Exchange Point 
+.RB "(" IXP ")"
+subnets from
+.BR PeeringDB ,
+or reserved subnets from Internet Assigned Numbers Authority
+.RB "(" IANA ")."
+
+For a given
+.I ASnumber
+it would display a digest of the registered informations from Regional Internet Registries
+.RB "(" RIR ")."
+
+.SH OPTIONS
+.SS
+.RI "-rezopole
+use the
+.I "reference servers"
+from
+.BR Rezopole/LyonIX "."
+.RI "(" default ")"
+.SS
+.RI "-cymru
+use the
+.I "reference servers"
+from
+.BR "Team CYMRU" "."
+.SS
+.RI "-suffix4=" fqdn.suffix.tld
+set the
+.I suffix
+appended of the dns-reversed IPv4 address for querying the
+.IR "reference servers" "."
+(default : origin.asn.rezopole.net.)
+.SS
+.RI "-suffix6=" fqdn.suffix.tld
+set the
+.I suffix
+appended of the dns-reversed IPv6 address for querying the
+.IR "reference servers" "."
+(default : origin6.asn.rezopole.net.)
+.SS
+.RI "@" "ww.xx.yy.zz"
+set the IPv4 where to query in dns format for maching informations instead of
+.IR "reference servers" "."
+.SS
+"-d" " | " "--debug"
+output the dns queries performed for retrieving informations.
+.SS
+"--help"
+display a small usage-help reminder.
+.SH OUTPUT
+The output format is the content of the dns-supplied
+.B TXT
+answers for the query. Those values are consistant with original
+.B Team CYMRU
+format, enriched with additional regional fields at the end.
+.SH RETURNED VALUES
+.B asdig
+returns
+.B 1
+(error) whenever a
+.B DNS
+error occured such as unreachable server, bad query, failure to respond.
+
+For any valid
+.B DNS
+answer, even empty,
+.B 0
+(success) is returned.
+.SH SEE ALSO
+.RB "(1)" "hosts" ", (1)" ns-lookup ", (1)" dig ", (1)" whois
+.SH BUGS
+There may have any, please submit them to
+.B sysadm@rezopole.net
+.SH AUTHOR
+Jean-Daniel Pauget (jdpauget@rezopole.net) et Al.
+.SH MANPAGE VERSION
+@ASDIG_VERSION@
+
+
