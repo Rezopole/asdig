@@ -48,14 +48,6 @@ then the traditionnal build sequence :
     make install
 ```
 
-### Installation on OpenBSD
-Install `libbind` and `gmake` and compile with :
-
-```bash
-$ doas pkg_add libbind gmake
-$ gmake OPENBSD=1 && chmod 755 ./asdig && doas cp ./asdig /usr/local/bin
-```
-
 ## Prerequisites
 an autoconf / automake build-chain, in order to get a compilable tree.
 
