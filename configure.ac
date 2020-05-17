@@ -74,7 +74,8 @@ AC_SUBST(RESOLV_LDFLAGS)
 dnl check for mac-osX gcc stl variant
 case "$target" in
     *-apple-darwin*)
-	CXXFLAGS="$CXXFLAGS -stdlib=libstdc++"
+	dnl some older darwin wanted that .... CXXFLAGS="$CXXFLAGS -stdlib=libstdc++"
+	CXXFLAGS="$CXXFLAGS-std=libc++"
 	AC_MSG_RESULT([stdlib variant : -stdlib=libstdc++])
 	;;
     *)

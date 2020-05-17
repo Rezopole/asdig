@@ -1,3 +1,6 @@
 
+man
+    [ ] provide detail about output
+
 build
-    include correct version from build infrastructure number instead of static in code
+    [x] include correct version from build infrastructure number instead of static in code

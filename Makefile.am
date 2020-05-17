@@ -35,18 +35,19 @@ vimtest: asdig
 
 
 bin_PROGRAMS = asdig
+man1_MANS = asdig.1
 
 asdig_SOURCES = asdig.cpp  ethertype.h  level3addr.h config.h
-asdig_CXXFLAGS = @RESOLV_CXXFLAGS@
+asdig_CXXFLAGS = @CXXFLAGS@ @RESOLV_CXXFLAGS@
 asdig_LDFLAGS = @RESOLV_LDFLAGS@
-asdig_MANS1 = asdig.1
 		   
 clean-local:
 	:
 
 distclean-local:
 	:
-	rm m4/*.m4
-	rm config.h.in~
+	rm -f m4/*.m4
+	rm -f config.h.in~
 	rm -rf debian
+	rm -f Makefile
 
