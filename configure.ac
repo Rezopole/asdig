@@ -20,7 +20,7 @@ dnl
 dnl }
 
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([asdig], [0.0.96], [sysadm@rezopole.net])
+AC_INIT([asdig], [0.0.97], [sysadm@rezopole.net])
 AC_CONFIG_SRCDIR([./asdig.cpp])
 
 

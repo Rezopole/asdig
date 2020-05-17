@@ -41,7 +41,7 @@ the following should bring you to a traditional build tree :
 ```bash
    libtoolize --force --copy && aclocal && autoheader && automake --add-missing --copy && autoconf ```
 ```
-then the traditionnal build sequence :
+then the traditional build sequence :
 ```bash
     ./configure
     make
