@@ -1,0 +1,16 @@
+Source: asdig
+Section: admin
+Priority: optional
+Maintainer: Jean-Daniel Pauget <sysadm@rezopole.net>
+Build-Depends: debhelper (>= 9), autotools-dev
+Standards-Version: 3.9.5
+Homepage: https://github.com/Rezopole/asdig
+#Vcs-Git: git://anonscm.debian.org/collab-maint/asdig.git
+#Vcs-Browser: http://anonscm.debian.org/?p=collab-maint/asdig.git;a=summary
+
+Package: asdig
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: simple unix util for retrieving AS (autonomous system) match from IP(v6)
+ asdig efficiently maches AS to IP/IPv6 by querying ref DB such as
+ Rezopole or CYMRU.

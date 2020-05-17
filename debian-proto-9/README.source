@@ -1,0 +1,11 @@
+asdig for Debian
+---------------
+
+asdig debian package is yet manually tuned over a simple
+    DEBEMAIL="sysadm@rezopole.net" DEBFULLNAME="Jean-Daniel Pauget" dh_make -y --indep --createorig
+    tuning of debian/install
+    pandoc -f markdown -t plain --wrap=none README.md -o debian/README
+    cd debian && debuild -us -uc
+
+ -- Jean-Daniel Pauget <sysadm@rezopole.net>  Thu, 14 May 2020 20:39:37 +0200
+
