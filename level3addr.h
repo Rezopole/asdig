@@ -217,9 +217,9 @@ ostream &operator<< (ostream &out, const Level3Addr &a) {
 	return out << str;
 	break;
       default:
-	return out << "invalidL3addr";
 	break;
     }
+    return out << "invalidL3addr";
 }
 
 Level3Addr l3mask (int nb) {
