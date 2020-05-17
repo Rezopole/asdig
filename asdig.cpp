@@ -205,7 +205,7 @@ int main (int nb, char ** cmde) {
 		debug_query = true;
 		continue;
 	    } else {
-		cerr << "unkown option \"" << cmde[i] << "\"" << endl;
+		cerr << "unknown option \"" << cmde[i] << "\"" << endl;
 		continue;
 	    }
 	} else if (cmde[i][0] == '@') {

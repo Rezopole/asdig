@@ -4,6 +4,7 @@
     OURPACKAGEVERSION=$( grep '^AC_INIT' ./configure.ac | cut -d'[' -f3 | cut -d']' -f1 )
 
     OURBUILDDIR=$( mktemp -d /tmp/"${OURPACKAGENAME}"_build_XXXXX  )
+    FINALDEST=$( pwd )
 
     if [ ! -d "${OURBUILDDIR}" ]
     then
@@ -27,6 +28,7 @@
 	    cd debian && debuild -us -uc
 	)
     )
+    cp "${OURBUILDDIR}"/*deb "${FINALDEST}"
     echo '-----------------------------------------------------------------'
-    ls -l "${OURBUILDDIR}"/*deb
+    ls -l *deb
 
