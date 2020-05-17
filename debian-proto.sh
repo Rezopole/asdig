@@ -24,7 +24,7 @@
 
 	(   cd "${OURBUILDDIR}/${OURPACKAGENAME}-${OURPACKAGEVERSION}" || exit 1
 	    autoall
-	    if [ "$DEBHELPERVERSION" - le 10 ]
+	    if [ "$DEBHELPERVERSION" -le 10 ]
 	    then
 	        cp -a debian-proto-9 debian
 	    else
