@@ -36,8 +36,17 @@ $ asdig as199422
 
 AS-199422 is registered from RIPE to some french organisation (since 2013-01-24) that named it "REZOPOLE".
 
-## Installation
-`> make && chmod 755 ./asdig && cp ./asdig /usr/local/bin`
+## Compilation / Installation
+the following should bring you to a traditional build tree :
+```bash
+   libtoolize --force --copy && aclocal && autoheader && automake --add-missing --copy && autoconf ```
+```
+then the traditionnal build sequence :
+```bash
+    ./configure
+    make
+    make install
+```
 
 ### Installation on OpenBSD
 Install `libbind` and `gmake` and compile with :
@@ -48,6 +57,8 @@ $ gmake OPENBSD=1 && chmod 755 ./asdig && doas cp ./asdig /usr/local/bin
 ```
 
 ## Prerequisites
+an autoconf / automake build-chain, in order to get a compilable tree.
+
 a C++ compiler and the resolv library with it's headers.
 
 ## Authors
