@@ -1,9 +1,9 @@
-asdig (0.0.97-1) unstable; urgency=medium
+asdig (0.0.97-1) RELEASE-TARGET; urgency=medium
 
   * Minor corrections
 
  -- Jean-Daniel Pauget <sysadm@rezopole.net>  Sun, 17 May 2020 19:00:00 +0200
-asdig (0.0.96-1) unstable; urgency=medium
+asdig (0.0.96-1) RELEASE-TARGET; urgency=medium
 
   * Initial release
 

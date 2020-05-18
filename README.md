@@ -8,7 +8,7 @@ how to retrieve the AS that publish a prefix for 134.214.100.6 ?
 ```bash
 $ asdig 134.214.100.6
 2060 | 134.214.0.0/16 | EU | ripe | 1993-09-01 | FR-RENATER
- ```
+```
 
 AS-2060 (RENATER) does via the 134.214.0.0/16 subnet route.
 
@@ -23,7 +23,7 @@ iznasa.hs.llnwd.net has IPv6 address 2a02:3d0:623:a000::8008
 
 $ asdig 2a02:3d0:623:a000::8008
 22822 | 2a02:3d0::/32 | US | arin | 2001-11-28 | LLNW
- ```
+```
 
 AS-22822 (LLWN) does via the 2a02:3d0::/32 subnet announce.
 
@@ -32,14 +32,14 @@ who is AS-199422 ?
 ```bash
 $ asdig as199422
 199422 | FR | ripe | 2013-01-24 | REZOPOLE
- ```
+```
 
 AS-199422 is registered from RIPE to some french organisation (since 2013-01-24) that named it "REZOPOLE".
 
 ## Compilation / Installation
 the following should bring you to a traditional build tree :
 ```bash
-   libtoolize --force --copy && aclocal && autoheader && automake --add-missing --copy && autoconf ```
+   libtoolize --force --copy && aclocal && autoheader && automake --add-missing --copy && autoconf
 ```
 then the traditional build sequence :
 ```bash
