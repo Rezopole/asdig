@@ -39,7 +39,7 @@ AS-199422 is registered from RIPE to some french organisation (since 2013-01-24)
 ## Compilation / Installation
 the following should bring you to a traditional build tree :
 ```bash
-   libtoolize --force --copy && aclocal && autoheader && automake --add-missing --copy && autoconf ```
+   libtoolize --force --copy && aclocal && autoheader && automake --add-missing --copy && autoconf
 ```
 then the traditional build sequence :
 ```bash
