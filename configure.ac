@@ -83,6 +83,8 @@ case "$target" in
 	;;
 esac
 
+AC_DEFINE_UNQUOTED([DEBUG_DNS_BUFFER], [0], [shall we dump intermediate states of dns-buffers for debug])
+AC_SUBST(DEBUG_DNS_BUFFER,[0])
 
 dnl  dnl concatenation of include dirs
 dnl  CFLAGS="$INCPATH $CFLAGS"
